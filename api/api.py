@@ -472,14 +472,14 @@ async def delete_wiki_cache(
     repo: str = Query(..., description="Repository name"),
     repo_type: str = Query(..., description="Repository type (e.g., github, gitlab)"),
     language: str = Query(..., description="Language of the wiki content"),
-    authorization_code: str = Query(..., description="Authorization code")
+    authorization_code: Optional[str] = Query(None, description="Authorization code")
 ):
     """
     Deletes a specific wiki cache from the file system.
     """
     if WIKI_AUTH_MODE:
         logger.info("check the authorization code")
-        if WIKI_AUTH_CODE != authorization_code:
+        if not authorization_code or WIKI_AUTH_CODE != authorization_code:
             raise HTTPException(status_code=401, detail="Authorization code is invalid")
 
     logger.info(f"Attempting to delete wiki cache for {owner}/{repo} ({repo_type}), lang: {language}")
