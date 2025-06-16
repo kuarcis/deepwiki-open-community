@@ -70,7 +70,6 @@ if __name__ == "__main__":
     logger.info(f"Starting Streaming API on port {port}")
 
     # Run the FastAPI app with uvicorn
-    # Note: watchfiles monkey patch applied earlier before uvicorn import
     uvicorn.run(
         "api.api:app",
         host="0.0.0.0",
