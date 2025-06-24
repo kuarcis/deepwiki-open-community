@@ -214,6 +214,7 @@ export default function RepoWikiPage() {
   const [requestInProgress, setRequestInProgress] = useState(false);
   const [currentToken, setCurrentToken] = useState(token); // Track current effective token
   const [effectiveRepoInfo, setEffectiveRepoInfo] = useState(repoInfo); // Track effective repo info with cached data
+  const [embeddingError, setEmbeddingError] = useState(false);
 
   // Model selection state variables
   const [selectedProviderState, setSelectedProviderState] = useState(providerParam);
@@ -260,6 +261,24 @@ export default function RepoWikiPage() {
       wikiContent.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [currentPageId]);
+
+  // close the modal when escape is pressed
+  useEffect(() => {
+    const handleEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsAskModalOpen(false);
+      }
+    };
+
+    if (isAskModalOpen) {
+      window.addEventListener('keydown', handleEsc);
+    }
+
+    // Cleanup on unmount or when modal closes
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, [isAskModalOpen]);
 
   // Fetch authentication status on component mount
   useEffect(() => {
@@ -579,6 +598,7 @@ Remember:
     if (!owner || !repo) {
       setError('Invalid repository information. Owner and repo name are required.');
       setIsLoading(false);
+      setEmbeddingError(false); // Reset embedding error state
       return;
     }
 
@@ -818,7 +838,17 @@ IMPORTANT:
         }
       }
 
-      // Clean up markdown delimiters
+      if(responseText.includes('Error preparing retriever: Environment variable OPENAI_API_KEY must be set')) {
+         setEmbeddingError(true);
+         throw new Error('OPENAI_API_KEY environment variable is not set. Please configure your OpenAI API key.');
+       }
+
+       if(responseText.includes('Ollama model') && responseText.includes('not found')) {
+         setEmbeddingError(true);
+         throw new Error('The specified Ollama embedding model was not found. Please ensure the model is installed locally or select a different embedding model in the configuration.');
+       }
+
+        // Clean up markdown delimiters
       responseText = responseText.replace(/^```(?:xml)?\s*/i, '').replace(/```\s*$/i, '');
 
       // Extract wiki structure from response
@@ -1056,6 +1086,7 @@ IMPORTANT:
     setGeneratedPages({});
     setPagesInProgress(new Set());
     setError(null);
+    setEmbeddingError(false); // Reset embedding error state
 
     try {
       // Set the request in progress flag
@@ -1453,6 +1484,7 @@ IMPORTANT:
     } catch (err) {
       console.warn('Error calling DELETE /api/wiki_cache:', err);
       setIsLoading(false);
+      setEmbeddingError(false); // Reset embedding error state
       // Optionally, inform the user about the cache clear error
       // setError(\`Error clearing cache: ${err instanceof Error ? err.message : String(err)}. Trying to refresh...\`);
       throw err;
@@ -1485,6 +1517,7 @@ IMPORTANT:
     setGeneratedPages({});
     setPagesInProgress(new Set());
     setError(null);
+    setEmbeddingError(false); // Reset embedding error state
     setIsLoading(true); // Set loading state for refresh
     setLoadingMessage(messages.loading?.initializing || 'Initializing wiki generation...');
 
@@ -1526,11 +1559,21 @@ IMPORTANT:
             const cachedData = await response.json(); // Returns null if no cache
             if (cachedData && cachedData.wiki_structure && cachedData.generated_pages && Object.keys(cachedData.generated_pages).length > 0) {
               console.log('Using server-cached wiki data');
+              if(cachedData.mode) {
+                setSelectedModelState(cachedData.model);
+              }
+              if(cachedData.provider) {
+                setSelectedProviderState(cachedData.provider);
+              }
 
-              setSelectedModelState(cachedData.model);
-              setSelectedProviderState(cachedData.provider);
-              // Update repoInfo 
-              setEffectiveRepoInfo(cachedData.repo); 
+              // Update repoInfo
+              if(cachedData.repo) {
+                setEffectiveRepoInfo(cachedData.repo);
+              } else if (cachedData.repo_url && !effectiveRepoInfo.repoUrl) {
+                const updatedRepoInfo = { ...effectiveRepoInfo, repoUrl: cachedData.repo_url };
+                setEffectiveRepoInfo(updatedRepoInfo); // Update effective repo info state
+                console.log('Using cached repo_url:', cachedData.repo_url);
+              }
 
               // Ensure the cached structure has sections and rootSections
               const cachedStructure = {
@@ -1652,6 +1695,7 @@ IMPORTANT:
               setGeneratedPages(cachedData.generated_pages);
               setCurrentPageId(cachedStructure.pages.length > 0 ? cachedStructure.pages[0].id : undefined);
               setIsLoading(false);
+              setEmbeddingError(false); 
               setLoadingMessage(undefined);
               cacheLoadedSuccessfully.current = true;
               return; // Exit if cache is successfully loaded
@@ -1830,7 +1874,11 @@ IMPORTANT:
             </div>
             <p className="text-[var(--foreground)] text-sm mb-3">{error}</p>
             <p className="text-[var(--muted)] text-xs">
-              {messages.repoPage?.errorMessageDefault || 'Please check that your repository exists and is public. Valid formats are "owner/repo", "https://github.com/owner/repo", "https://gitlab.com/owner/repo", "https://bitbucket.org/owner/repo", or local folder paths like "C:\\path\\to\\folder" or "/path/to/folder".'}
+              {embeddingError ? (
+                messages.repoPage?.embeddingErrorDefault || 'This error is related to the document embedding system used for analyzing your repository. Please verify your embedding model configuration, API keys, and try again. If the issue persists, consider switching to a different embedding provider in the model settings.'
+              ) : (
+                messages.repoPage?.errorMessageDefault || 'Please check that your repository exists and is public. Valid formats are "owner/repo", "https://github.com/owner/repo", "https://gitlab.com/owner/repo", "https://bitbucket.org/owner/repo", or local folder paths like "C:\\path\\to\\folder" or "/path/to/folder".'
+              )}
             </p>
             <div className="mt-5">
               <Link
