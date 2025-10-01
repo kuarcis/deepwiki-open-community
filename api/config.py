@@ -12,6 +12,7 @@ from api.openrouter_client import OpenRouterClient
 from api.bedrock_client import BedrockClient
 from api.google_embedder_client import GoogleEmbedderClient
 from api.azureai_client import AzureAIClient
+from api.dashscope_client import DashscopeClient
 from adalflow import GoogleGenAIClient, OllamaClient
 
 # Get API keys from environment variables
@@ -58,7 +59,8 @@ CLIENT_CLASSES = {
     "OpenRouterClient": OpenRouterClient,
     "OllamaClient": OllamaClient,
     "BedrockClient": BedrockClient,
-    "AzureAIClient": AzureAIClient
+    "AzureAIClient": AzureAIClient,
+    "DashscopeClient": DashscopeClient
 }
 
 def replace_env_placeholders(config: Union[Dict[str, Any], List[Any], str, Any]) -> Union[Dict[str, Any], List[Any], str, Any]:
@@ -107,7 +109,7 @@ def load_json_config(filename):
             logger.warning(f"Configuration file {config_path} does not exist")
             return {}
 
-        with open(config_path, 'r') as f:
+        with open(config_path, 'r', encoding='utf-8') as f:
             config = json.load(f)
             config = replace_env_placeholders(config)
             return config
@@ -126,14 +128,15 @@ def load_generator_config():
             if provider_config.get("client_class") in CLIENT_CLASSES:
                 provider_config["model_client"] = CLIENT_CLASSES[provider_config["client_class"]]
             # Fall back to default mapping based on provider_id
-            elif provider_id in ["google", "openai", "openrouter", "ollama", "bedrock", "azure"]:
+            elif provider_id in ["google", "openai", "openrouter", "ollama", "bedrock", "azure", "dashscope"]:
                 default_map = {
                     "google": GoogleGenAIClient,
                     "openai": OpenAIClient,
                     "openrouter": OpenRouterClient,
                     "ollama": OllamaClient,
                     "bedrock": BedrockClient,
-                    "azure": AzureAIClient
+                    "azure": AzureAIClient,
+                    "dashscope": DashscopeClient
                 }
                 provider_config["model_client"] = default_map[provider_id]
             else:
@@ -237,7 +240,10 @@ def load_lang_config():
             "zh-tw": "Traditional Chinese (繁體中文)",
             "es": "Spanish (Español)",
             "kr": "Korean (한국어)",
-            "vi": "Vietnamese (Tiếng Việt)"
+            "vi": "Vietnamese (Tiếng Việt)",
+            "pt-br": "Brazilian Portuguese (Português Brasileiro)",
+            "fr": "Français (French)",
+            "ru": "Русский (Russian)"
         },
         "default": "en"
     }

@@ -14,7 +14,7 @@
 [![Twitter/X](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/sashimikun_void)
 [![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/VQMBGR8u5v)
 
-[English](./README.md) | [简体中文](./README.zh.md) | [繁體中文](./README.zh-tw.md) | [日本語](./README.ja.md) | [Español](./README.es.md) | [한국어](./README.kr.md) | [Tiếng Việt](./README.vi.md)
+[English](./README.md) | [简体中文](./README.zh.md) | [繁體中文](./README.zh-tw.md) | [日本語](./README.ja.md) | [Español](./README.es.md) | [한국어](./README.kr.md) | [Tiếng Việt](./README.vi.md) | [Português Brasileiro](./README.pt-br.md) | [Français](./README.fr.md) | [Русский](./README.ru.md)
 
 ## ✨ 特點
 
@@ -183,8 +183,8 @@ DeepWiki 現在實作了靈活的基於提供商的模型選擇系統，支援�
 
 ### 支援的提供商和模型
 
-- **Google**：預設 `gemini-2.0-flash`，也支援 `gemini-1.5-flash`、`gemini-1.0-pro` 等
-- **OpenAI**：預設 `gpt-4o`，也支援 `o4-mini` 等
+- **Google**：預設 `gemini-2.5-flash`，也支援 `gemini-2.5-flash-lite`、`gemini-2.5-pro` 等
+- **OpenAI**：預設 `gpt-5-nano`，也支援 `gpt-5`, `4o` 等
 - **OpenRouter**：透過統一 API 存取多種模型，包括 Claude、Llama、Mistral 等
 - **Ollama**：支援本機執行的開源模型，如 `llama3`
 
@@ -256,7 +256,7 @@ OpenAI 客戶端的 base_url 設定主要為擁有私有 API 通道的企業使�
 2. 在專案根目錄的 `.env` 檔案中，設定相關的環境變數，例如：
    ```
    OPENAI_API_KEY=your_api_key
-   OPENAI_API_BASE_URL=your_openai_compatible_endpoint
+   OPENAI_BASE_URL=your_openai_compatible_endpoint
    ```
 3. 程式會自動用環境變數的值替換 embedder.json 中的預留位置。
 
