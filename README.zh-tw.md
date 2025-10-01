@@ -1,31 +1,49 @@
+## 🔄 社群維護的分支
+
+這是 [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open) 的**社群分支**。
+
+### 為何存在此分支
+- 上游儲存庫有一個待處理的 PR (包含 [#192](https://github.com/AsyncFuncAI/deepwiki-open/pull/192))，社群對此感興趣
+- 此分支合併了該 PR 並進行積極開發更新
+
+### 貢獻
+歡迎提交 PR！我會盡力積極審查和合併。請遵循原專案的貢獻指南。
+
+### 近期新增
+- Google Embedder 支援 (來自 PR #192)
+- 由於不熟悉其他語言，我只更新英文跟正體中文的 README.md。
+
+以下為上游Repo說明
+
 # DeepWiki-Open
 
 ![DeepWiki 橫幅](screenshots/Deepwiki.png)
 
-**DeepWiki** 可以為任何 GitHub、GitLab 或 BitBucket 程式碼儲存庫自動建立美觀、互動式的 Wiki！只需輸入儲存庫名稱，DeepWiki 將：
+**DeepWiki** 是我個人對 DeepWiki 的實作嘗試，能為任何 GitHub、GitLab 或 BitBucket 儲存庫自動建立美觀、互動式的 wiki！只需輸入儲存庫名稱，DeepWiki 就會：
 
 1. 分析程式碼結構
 2. 產生全面的文件
-3. 建立視覺化圖表解釋一切如何運作
-4. 將所有內容整理成易於導覽的 Wiki
+3. 建立視覺化圖表來解釋一切如何運作
+4. 將所有內容整理成一個易於導覽的 wiki
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/sheing)
-[![Tip in Crypto](https://tip.md/badge.svg)](https://tip.md/sng-asyncfunc)
+如果您想捐款，請前往上游Repo進行捐贈。作者是使這個開源專案成為可能的人。
+
 [![Twitter/X](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/sashimikun_void)
 [![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/VQMBGR8u5v)
 
-[English](./README.md) | [简体中文](./README.zh.md) | [繁體中文](./README.zh-tw.md) | [日本語](./README.ja.md) | [Español](./README.es.md) | [한국어](./README.kr.md) | [Tiếng Việt](./README.vi.md) | [Português Brasileiro](./README.pt-br.md) | [Français](./README.fr.md) | [Русский](./README.ru.md)
+[English](./README.md) | [繁體中文](./README.zh-tw.md) 
 
 ## ✨ 特點
 
 - **即時文件**：幾秒鐘內將任何 GitHub、GitLab 或 BitBucket 儲存庫轉換為 Wiki
 - **私人儲存庫支援**：使用個人存取權杖安全存取私人儲存庫
 - **智慧分析**：AI 驅動的程式碼結構和關係理解
-- **精美圖表**：自動產生 Mermaid 圖表視覺化架構和資料流
+- **精美圖表**：自動產生 Mermaid圖表視覺化架構和資料流
 - **簡易導覽**：簡單、直觀的介面探索 Wiki
 - **提問功能**：使用 RAG 驅動的 AI 與您的儲存庫聊天，取得準確答案
 - **深度研究**：多輪研究過程，徹底調查複雜主題
 - **多模型提供商**：支援 Google Gemini、OpenAI、OpenRouter 和本機 Ollama 模型
+- **靈活的嵌入模型**：可選擇 OpenAI、Google AI 或本機 Ollama 嵌入以獲得最佳效能
 
 ## 🚀 快速開始（超級簡單！）
 
@@ -39,27 +57,26 @@ cd deepwiki-open
 # 建立包含 API 金鑰的 .env 檔案
 echo "GOOGLE_API_KEY=your_google_api_key" > .env
 echo "OPENAI_API_KEY=your_openai_api_key" >> .env
+# 可選：使用 Google AI 嵌入模型而非 OpenAI (若使用 Google 模型建議開啟)
+echo "DEEPWIKI_EMBEDDER_TYPE=google" >> .env
 # 可選：如果您想使用 OpenRouter 模型，新增 OpenRouter API 金鑰
 echo "OPENROUTER_API_KEY=your_openrouter_api_key" >> .env
 # 可選：如果 Ollama 不在本機執行，新增 Ollama 主機位址，預設為 http://localhost:11434
 echo "OLLAMA_HOST=your_ollama_host" >> .env
-
+# 可選：如果您想使用 Azure OpenAI 模型，新增 Azure API 金鑰、端點和版本
+echo "AZURE_OPENAI_API_KEY=your_azure_openai_api_key" >> .env
+echo "AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint" >> .env
+echo "AZURE_OPENAI_VERSION=your_azure_openai_version" >> .env
 # 使用 Docker Compose 執行
 docker-compose up
 ```
 
 有關使用 DeepWiki 搭配 Ollama 和 Docker 的詳細說明，請參閱 [Ollama 操作說明](Ollama-instruction.md)。
 
-(上述 Docker 命令以及 `docker-compose.yml` 設定會掛載您主機上的 `~/.adalflow` 目錄到容器內的 `/root/.adalflow`。此路徑用於儲存：
-- 複製的儲存庫 (`~/.adalflow/repos/`)
-- 儲存庫的嵌入和索引 (`~/.adalflow/databases/`)
-- 快取的已產生 Wiki 內容 (`~/.adalflow/wikicache/`)
-
-這確保了即使容器停止或移除，您的資料也能持久保存。)
-
 > 💡 **取得這些金鑰的地方：**
 > - 從 [Google AI Studio](https://makersuite.google.com/app/apikey) 取得 Google API 金鑰
 > - 從 [OpenAI Platform](https://platform.openai.com/api-keys) 取得 OpenAI API 金鑰
+> - 從 [Azure Portal](https://portal.azure.com/) 取得 Azure OpenAI 憑證 - 建立一個 Azure OpenAI 資源並取得 API 金鑰、端點和 API 版本
 
 ### 選項 2：手動設定（推薦）
 
@@ -70,8 +87,14 @@ docker-compose up
 ```
 GOOGLE_API_KEY=your_google_api_key
 OPENAI_API_KEY=your_openai_api_key
+# 可選：使用 Google AI Embedder 分析文件 (若使用 Google 模型建議開啟)
+DEEPWIKI_EMBEDDER_TYPE=google
 # 可選：如果您想使用 OpenRouter 模型，新增此項
 OPENROUTER_API_KEY=your_openrouter_api_key
+# 可選：如果您想使用 Azure OpenAI 模型，新增此項
+AZURE_OPENAI_API_KEY=your_azure_openai_api_key
+AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint
+AZURE_OPENAI_VERSION=your_azure_openai_version
 # 可選：如果 Ollama 不在本機執行，新增 Ollama 主機位址，預設為 http://localhost:11434
 OLLAMA_HOST=your_ollama_host
 ```
@@ -113,7 +136,7 @@ DeepWiki 使用 AI 來：
 
 1. 複製並分析 GitHub、GitLab 或 Bitbucket 儲存庫（包括使用權杖驗證的私人儲存庫）
 2. 建立程式碼嵌入用於智慧檢索
-3. 使用上下文感知 AI 產生文件（使用 Google Gemini、OpenAI、OpenRouter 或本機 Ollama 模型）
+3. 使用上下文感知 AI 產生文件（使用 Google Gemini、OpenAI、OpenRouter、Azure OpenAI 或本機 Ollama 模型）
 4. 建立視覺化圖表解釋程式碼關係
 5. 將所有內容組織成結構化 Wiki
 6. 透過提問功能實現與儲存庫的智慧問答
@@ -133,11 +156,13 @@ graph TD
     M -->|OpenAI| E2[使用 OpenAI 產生]
     M -->|OpenRouter| E3[使用 OpenRouter 產生]
     M -->|本機 Ollama| E4[使用 Ollama 產生]
+    M -->|Azure| E5[使用 Azure 產生]
 
     E1 --> E[產生文件]
     E2 --> E
     E3 --> E
     E4 --> E
+    E5 --> E
 
     D --> F[建立視覺化圖表]
     E --> G[組織為 Wiki]
@@ -151,7 +176,7 @@ graph TD
 
     class A,D data;
     class AA,M decision;
-    class B,C,E,F,G,AB,E1,E2,E3,E4 process;
+    class B,C,E,F,G,AB,E1,E2,E3,E4,E5 process;
     class H result;
 ```
 
@@ -170,7 +195,7 @@ deepwiki/
 │   ├── app/              # Next.js 應用目錄
 │   │   └── page.tsx      # 主應用頁面
 │   └── components/       # React 元件
-│       └── Mermaid.tsx   # Mermaid 圖表渲染器
+│       └── Mermaid.tsx   # Mermaid圖表渲染器
 │
 ├── public/               # 靜態資源
 ├── package.json          # JavaScript 相依性
@@ -186,6 +211,7 @@ DeepWiki 現在實作了靈活的基於提供商的模型選擇系統，支援�
 - **Google**：預設 `gemini-2.5-flash`，也支援 `gemini-2.5-flash-lite`、`gemini-2.5-pro` 等
 - **OpenAI**：預設 `gpt-5-nano`，也支援 `gpt-5`, `4o` 等
 - **OpenRouter**：透過統一 API 存取多種模型，包括 Claude、Llama、Mistral 等
+- **Azure OpenAI**：預設 `gpt-4o`，也支援 `o4-mini` 等
 - **Ollama**：支援本機執行的開源模型，如 `llama3`
 
 ### 環境變數
@@ -197,6 +223,9 @@ DeepWiki 現在實作了靈活的基於提供商的模型選擇系統，支援�
 GOOGLE_API_KEY=your_google_api_key        # 使用 Google Gemini 模型時必需
 OPENAI_API_KEY=your_openai_api_key        # 使用 OpenAI 模型時必需
 OPENROUTER_API_KEY=your_openrouter_api_key # 使用 OpenRouter 模型時必需
+AZURE_OPENAI_API_KEY=your_azure_openai_api_key  # 使用 Azure OpenAI 模型時必需
+AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint  # 使用 Azure OpenAI 模型時必需
+AZURE_OPENAI_VERSION=your_azure_openai_version  # 使用 Azure OpenAI 模型時必需
 
 # OpenAI API 基礎 URL 設定
 OPENAI_BASE_URL=https://custom-api-endpoint.com/v1  # 可選，用於自訂 OpenAI API 端點
@@ -213,7 +242,7 @@ DEEPWIKI_CONFIG_DIR=/path/to/custom/config/dir  # 可選，用於自訂設定檔
 DeepWiki 使用 JSON 設定檔來管理系統的各個層面：
 
 1. **`generator.json`**：文字產生模型設定
-   - 定義可用的模型提供商（Google、OpenAI、OpenRouter、Ollama）
+   - 定義可用的模型提供商（Google、OpenAI、OpenRouter、Azure、Ollama）
    - 指定每個提供商的預設和可用模型
    - 包含模型特定參數，如 temperature 和 top_p
 
@@ -262,6 +291,89 @@ OpenAI 客戶端的 base_url 設定主要為擁有私有 API 通道的企業使�
 
 這讓您可以無縫切換到任何 OpenAI 相容的嵌入服務，無需變更程式碼。
 
+## 🧠 使用 Google AI 嵌入
+
+DeepWiki 現在支援 Google AI 最新的嵌入模型，作為 OpenAI 嵌入的替代方案。當您已經在使用 Google Gemini 模型進行文字生成時，這能提供更好的整合。
+
+### 特點
+
+- **最新模型**：使用 Google 的 `text-embedding-004` 模型
+- **相同的 API 金鑰**：使用您現有的 `GOOGLE_API_KEY` (無需額外設定)
+- **更好的整合**：為搭配 Google Gemini 文字生成模型使用而優化
+- **特定任務支援**：支援語義相似度、檢索和分類任務
+- **批次處理**：高效處理多個文本
+
+### 如何啟用 Google AI 嵌入
+
+**選項 1：環境變數 (推薦)**
+
+在您的 `.env` 檔案中設定嵌入模型類型：
+
+```bash
+# 您現有的 Google API 金鑰
+GOOGLE_API_KEY=your_google_api_key
+
+# 啟用 Google AI 嵌入
+DEEPWIKI_EMBEDDER_TYPE=google
+```
+
+**選項 2：Docker 環境**
+
+```bash
+docker run -p 8001:8001 -p 3000:3000 \
+  -e GOOGLE_API_KEY=your_google_api_key \
+  -e DEEPWIKI_EMBEDDER_TYPE=google \
+  -v ~/.adalflow:/root/.adalflow \
+  ghcr.io/asyncfuncai/deepwiki-open:latest
+```
+
+**選項 3：Docker Compose**
+
+在您的 `.env` 檔案中新增：
+
+```bash
+GOOGLE_API_KEY=your_google_api_key
+DEEPWIKI_EMBEDDER_TYPE=google
+```
+
+然後執行：
+
+```bash
+docker-compose up
+```
+
+### 可用的嵌入模型類型
+
+| 類型 | 說明 | 需要的 API 金鑰 | 備註 |
+|------|-------------|------------------|-------|
+| `openai` | OpenAI 嵌入 (預設) | `OPENAI_API_KEY` | 使用 `text-embedding-3-small` 模型 |
+| `google` | Google AI 嵌入 | `GOOGLE_API_KEY` | 使用 `text-embedding-004` 模型 |
+| `ollama` | 本機 Ollama 嵌入 | 無 | 需要本機安裝 Ollama |
+
+### 為何使用 Google AI 嵌入？
+
+- **一致性**：如果您使用 Google Gemini 進行文字生成，使用 Google 嵌入能提供更好的語義一致性
+- **效能**：Google 最新的嵌入模型為檢索任務提供優異的效能
+- **成本**：與 OpenAI 相比具有競爭力的價格
+- **無需額外設定**：使用與您的文字生成模型相同的 API 金鑰
+
+### 在不同嵌入模型間切換
+
+您可以輕鬆地在不同的嵌入提供商之間切換：
+
+```bash
+# 使用 OpenAI 嵌入 (預設)
+export DEEPWIKI_EMBEDDER_TYPE=openai
+
+# 使用 Google AI 嵌入
+export DEEPWIKI_EMBEDDER_TYPE=google
+
+# 使用本機 Ollama 嵌入
+export DEEPWIKI_EMBEDDER_TYPE=ollama
+```
+
+**注意**：切換嵌入模型時，您可能需要重新為您的儲存庫產生嵌入，因為不同的模型會產生不同的向量空間。
+
 ### 日誌記錄
 
 DeepWiki 使用 Python 的內建 `logging` 模組進行診斷輸出。您可以透過環境變數設定詳細程度和日誌檔案目標：
@@ -304,16 +416,25 @@ docker-compose up
 
 | 變數             | 說明                                                  | 必需 | 備註                                                                                                     |
 |----------------------|--------------------------------------------------------------|----------|----------------------------------------------------------------------------------------------------------|
-| `GOOGLE_API_KEY`     | Google Gemini API 金鑰，用於 AI 產生                      | 否 | 只有在您想使用 Google Gemini 模型時才需要                                                    
-| `OPENAI_API_KEY`     | OpenAI API 金鑰，用於嵌入                                | 是 | 備註：即使您不使用 OpenAI 模型，這個也是必需的，因為它用於嵌入              |
+| `GOOGLE_API_KEY`     | Google Gemini API 金鑰，用於 AI 產生和嵌入      | 否 | 使用 Google Gemini 模型和 Google AI 嵌入時必需                                               |
+| `OPENAI_API_KEY`     | OpenAI API 金鑰，用於嵌入和模型                     | 條件式 | 使用 OpenAI 嵌入或模型時必需                                                            |
 | `OPENROUTER_API_KEY` | OpenRouter API 金鑰，用於替代模型                    | 否 | 只有在您想使用 OpenRouter 模型時才需要                                                       |
+| `AZURE_OPENAI_API_KEY` | Azure OpenAI API 金鑰                    | 否 | 只有在您想使用 Azure OpenAI 模型時才需要                                                       |
+| `AZURE_OPENAI_ENDPOINT` | Azure OpenAI 端點                    | 否 | 只有在您想使用 Azure OpenAI 模型時才需要                                                       |
+| `AZURE_OPENAI_VERSION` | Azure OpenAI 版本                     | 否 | 只有在您想使用 Azure OpenAI 模型時才需要                                                       |
 | `OLLAMA_HOST`        | Ollama 主機（預設：http://localhost:11434）                | 否 | 只有在您想使用外部 Ollama 伺服器時才需要                                                  |
+| `DEEPWIKI_EMBEDDER_TYPE` | 嵌入模型類型：`openai`、`google` 或 `ollama` (預設：`openai`) | 否 | 控制使用哪個嵌入提供商                                                              ||
 | `PORT`               | API 伺服器的連接埠（預設：8001）                      | 否 | 如果您在同一台機器上託管 API 和前端，請確保相應地變更 `SERVER_BASE_URL` 的連接埠 |
 | `SERVER_BASE_URL`    | API 伺服器的基礎 URL（預設：http://localhost:8001） | 否 |
 | `DEEPWIKI_AUTH_MODE` | 設定為 `true` 或 `1` 以啟用授權模式 | 否 | 預設為 `false`。如果啟用，則需要 `DEEPWIKI_AUTH_CODE` |
 | `DEEPWIKI_AUTH_CODE` | 當 `DEEPWIKI_AUTH_MODE` 啟用時，Wiki 產生所需的秘密代碼 | 否 | 只有在 `DEEPWIKI_AUTH_MODE` 為 `true` 或 `1` 時才使用 |
 
-如果您不使用 ollama 模式，您需要設定 OpenAI API 金鑰用於嵌入。其他 API 金鑰只有在設定並使用對應提供商的模型時才需要。
+**API 金鑰要求：**
+- 如果使用 `DEEPWIKI_EMBEDDER_TYPE=openai` (預設)：需要 `OPENAI_API_KEY`
+- 如果使用 `DEEPWIKI_EMBEDDER_TYPE=google`：需要 `GOOGLE_API_KEY`  
+- 如果使用 `DEEPWIKI_EMBEDDER_TYPE=ollama`：無需 API 金鑰 (本機處理)
+
+其他 API 金鑰只有在設定並使用對應提供商的模型時才需要。
 
 ## 授權模式
 
@@ -331,6 +452,8 @@ DeepWiki 可以設定為在授權模式下執行，在此模式下，Wiki 產生
 
 您可以使用 Docker 來執行 DeepWiki：
 
+#### 執行容器
+
 ```bash
 # 從 GitHub Container Registry 拉取映像
 docker pull ghcr.io/asyncfuncai/deepwiki-open:latest
@@ -341,6 +464,10 @@ docker run -p 8001:8001 -p 3000:3000 \
   -e OPENAI_API_KEY=your_openai_api_key \
   -e OPENROUTER_API_KEY=your_openrouter_api_key \
   -e OLLAMA_HOST=your_ollama_host \
+  -e AZURE_OPENAI_API_KEY=your_azure_openai_api_key \
+  -e AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint \
+  -e AZURE_OPENAI_VERSION=your_azure_openai_version \
+
   -v ~/.adalflow:/root/.adalflow \
   ghcr.io/asyncfuncai/deepwiki-open:latest
 ```
@@ -370,6 +497,9 @@ docker-compose up
 echo "GOOGLE_API_KEY=your_google_api_key" > .env
 echo "OPENAI_API_KEY=your_openai_api_key" >> .env
 echo "OPENROUTER_API_KEY=your_openrouter_api_key" >> .env
+echo "AZURE_OPENAI_API_KEY=your_azure_openai_api_key" >> .env
+echo "AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint" >> .env
+echo "AZURE_OPENAI_VERSION=your_azure_openai_version"  >>.env
 echo "OLLAMA_HOST=your_ollama_host" >> .env
 
 # 使用掛載的 .env 檔案執行容器
@@ -403,8 +533,27 @@ docker run -p 8001:8001 -p 3000:3000 \
   -e GOOGLE_API_KEY=your_google_api_key \
   -e OPENAI_API_KEY=your_openai_api_key \
   -e OPENROUTER_API_KEY=your_openrouter_api_key \
+  -e AZURE_OPENAI_API_KEY=your_azure_openai_api_key \
+  -e AZURE_OPENAI_ENDPOINT=your_azure_openai_endpoint \
+  -e AZURE_OPENAI_VERSION=your_azure_openai_version \
   -e OLLAMA_HOST=your_ollama_host \
   deepwiki-open
+```
+
+#### 在 Docker 中使用自簽憑證
+
+如果您在一個使用自簽憑證的環境中，您可以將它們包含在 Docker 建置中：
+
+1. 為您的憑證建立一個目錄 (預設是您專案根目錄中的 `certs`)
+2. 將您的 `.crt` 或 `.pem` 憑證檔案複製到此目錄
+3. 建置 Docker 映像：
+
+```bash
+# 使用預設憑證目錄 (certs) 建置
+docker build .
+
+# 或使用自訂憑證目錄建置
+docker build --build-arg CUSTOM_CERT_DIR=my-custom-certs .
 ```
 
 ### API 伺服器詳細資訊
@@ -465,17 +614,14 @@ OpenRouter 特別適用於以下情況：
 
 ## 📱 螢幕截圖
 
-### 主頁面
-![主頁面](screenshots/home.png)
+![DeepWiki 主介面](screenshots/Interface.png)
+*DeepWiki 的主介面*
 
-### Wiki 頁面
-![Wiki 頁面](screenshots/wiki-page.png)
+![私人儲存庫支援](screenshots/privaterepo.png)
+*使用個人存取權杖存取私人儲存庫*
 
-### 提問功能
-![提問功能](screenshots/ask.png)
-
-### 深度研究
-![深度研究](screenshots/deep-research.png)
+![深度研究功能](screenshots/DeepResearch.png)
+*深度研究為複雜主題進行多輪調查*
 
 ### 展示影片
 
@@ -483,62 +629,13 @@ OpenRouter 特別適用於以下情況：
 
 *觀看 DeepWiki 實際操作！*
 
-## 🔧 配置選項
-
-### 模型提供商
-
-DeepWiki 支援多個 AI 模型提供商：
-
-1. **Google Gemini**（預設）
-   - 快速且經濟實惠
-   - 良好的程式碼理解能力
-
-2. **OpenAI**
-   - 高品質輸出
-   - 支援 GPT-4 和 GPT-3.5
-
-3. **OpenRouter**
-   - 存取多個模型
-   - 靈活的定價選項
-
-4. **本機 Ollama**
-   - 隱私保護
-   - 離線執行
-   - 需要本機設定
-
-### Wiki 類型
-
-- **全面型**：包含詳細分析、程式碼範例和完整文件
-- **簡潔型**：專注於核心功能和關鍵見解
-
-## 🌍 支援的平台
-
-- **GitHub**：公開和私人儲存庫
-- **GitLab**：GitLab.com 和自主託管實例
-- **Bitbucket**：Atlassian 託管的儲存庫
-
-## 📚 API 端點
-
-### `/api/wiki_cache`
-- **方法**：GET
-- **描述**：檢索快取的 Wiki 資料
-- **參數**：
-  - `repo`: 儲存庫識別符
-  - `platform`: git 平台（github、gitlab、bitbucket）
-
-### `/export/wiki`
-- **方法**：GET
-- **描述**：匯出 Wiki 為 Markdown 或 JSON
-- **參數**：
-  - `repo`: 儲存庫識別符
-  - `format`: 匯出格式（markdown、json）
-
 ## ❓ 故障排除
 
 ### API 金鑰問題
 - **「缺少環境變數」**：確保您的 `.env` 檔案位於專案根目錄並包含所需的 API 金鑰
 - **「API 金鑰無效」**：檢查您是否正確複製了完整金鑰，沒有多餘空格
 - **「OpenRouter API 錯誤」**：驗證您的 OpenRouter API 金鑰有效且有足夠的額度
+- **「Azure OpenAI API 錯誤」**：驗證您的 Azure OpenAI 憑證 (API 金鑰、端點和版本) 是否正確，且服務已正確部署
 
 ### 連線問題
 - **「無法連線到 API 伺服器」**：確保 API 伺服器在連接埠 8001 上執行
@@ -557,50 +654,14 @@ DeepWiki 支援多個 AI 模型提供商：
 
 ## 🤝 貢獻
 
-我們歡迎各種形式的貢獻！無論是錯誤報告、功能請求還是程式碼貢獻。
-
-### 開發設定
-
-1. Fork 此儲存庫
-2. 建立功能分支：`git checkout -b feature/amazing-feature`
-3. 提交您的變更：`git commit -m 'Add amazing feature'`
-4. 推送到分支：`git push origin feature/amazing-feature`
-5. 開啟 Pull Request
-
-### 新增新語言支援
-
-1. 在 `src/messages/` 中新增新的翻譯檔案
-2. 更新 `src/i18n.ts` 中的 `locales` 陣列
-3. 建立相對應的 README 檔案
-4. 測試翻譯
+我們歡迎各種形式的貢獻！無論是：
+- 回報錯誤或功能請求
+- 提交拉取請求以改善程式碼
+- 分享您的回饋和想法
 
 ## 📄 授權
 
 此專案根據 MIT 授權條款授權 - 詳情請參閱 [LICENSE](LICENSE) 檔案。
-
-## 🙏 致謝
-
-- 感謝所有貢獻者的努力
-- 基於 Next.js、FastAPI 和各種開源程式庫建構
-- 特別感謝 AI 模型提供商讓此專案成為可能
-
-## 🐛 問題回報
-
-如果您遇到任何問題，請在 GitHub Issues 中建立問題報告。請包含：
-
-- 錯誤描述
-- 重現步驟
-- 預期行為
-- 螢幕截圖（如果適用）
-- 系統資訊
-
-## 🔮 未來計劃
-
-- [ ] 更多 AI 模型整合
-- [ ] 進階程式碼分析功能
-- [ ] 即時協作編輯
-- [ ] 行動應用支援
-- [ ] 企業級功能
 
 ## ⭐ Star 歷史
 

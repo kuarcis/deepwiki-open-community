@@ -1,3 +1,18 @@
+## 🔄 Community-Maintained Fork
+
+This is an **community fork** of [deepwiki-open](https://github.com/AsyncFuncAI/deepwiki-open).
+
+### Why This Fork Exists
+- The upstream repository has a pending PR (including [#192](https://github.com/AsyncFuncAI/deepwiki-open/pull/192)) with community interest
+- This fork merges the PR and update with active development
+
+### Contributing
+PRs welcome! I will try to review and merge actively. Please follow the original project's contribution guidelines.
+
+### Recent Additions
+- Google Embedder Support (from PR #192)
+- Due to the unfamilliarity of other language, i only keep English and zh-tw README.md updated.
+
 # DeepWiki-Open
 
 ![DeepWiki Banner](screenshots/Deepwiki.png)
@@ -9,12 +24,12 @@
 3. Create visual diagrams to explain how everything works
 4. Organize it all into an easy-to-navigate wiki
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/sheing)
-[![Tip in Crypto](https://tip.md/badge.svg)](https://tip.md/sng-asyncfunc)
+If you want to make a donation, go to the upstream repo and make your donation there. the author is the one who make this oss possible.
+
 [![Twitter/X](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/sashimikun_void)
 [![Discord](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/VQMBGR8u5v)
 
-[English](./README.md) | [简体中文](./README.zh.md) | [繁體中文](./README.zh-tw.md) | [日本語](./README.ja.md) | [Español](./README.es.md) | [한국어](./README.kr.md) | [Tiếng Việt](./README.vi.md) | [Português Brasileiro](./README.pt-br.md) | [Français](./README.fr.md) | [Русский](./README.ru.md)
+[English](./README.md) | [繁體中文](./README.zh-tw.md) 
 
 ## ✨ Features
 
